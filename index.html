@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Information</title>
+    <style>
+      body {
+        font-family: "Courier New", Courier, monospace;
+        background-color: #0093e9;
+        background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+        text-align: center;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      input {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      button {
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: #18181b;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #2f2f31 ;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 50rem; /* Set a minimum width for the container */
+      }
+
+      .info {
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: left;
+        font-family: "Courier New", Courier, monospace;
+        display: none; /* Hide by default */
+        width: 50%;
+      }
+
+      p {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+      .search_bar {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>GitHub Stalker</h1>
+
+      <div>
+        <label class="strong" for="usernameInput"><strong>Enter GitHub Username:</strong></label>
+      </div>
+      <div class="search_bar">
+        <input type="text" id="usernameInput" placeholder="GitHub Username" />
+        <button onclick="fetchGitHubInfo()">Get Info</button>
+      </div>
+
+      <div class="info">
+        <p><strong>Username:</strong> <span id="username"></span></p>
+        <p>
+          <strong>Public Repositories:</strong> <span id="publicRepos"></span>
+        </p>
+        <p><strong>Followers:</strong> <span id="followers"></span></p>
+        <p><strong>Following:</strong> <span id="following"></span></p>
+      </div>
+    </div>
+
+    <script>
+      function fetchGitHubInfo() {
+        // Get GitHub username from input field
+        const githubUsername = document.getElementById("usernameInput").value;
+
+        // GitHub API endpoint for user information
+        const apiUrl = `https://api.github.com/users/${githubUsername}`;
+
+        // Fetch data from GitHub API
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            // Update HTML with GitHub information
+            document.getElementById("username").innerText = data.login;
+            document.getElementById("publicRepos").innerText =
+              data.public_repos;
+            document.getElementById("followers").innerText = data.followers;
+            document.getElementById("following").innerText = data.following;
+
+            // Show the information div
+            document.querySelector(".info").style.display = "block";
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      }
+    </script>
+  </body>
+</html>
